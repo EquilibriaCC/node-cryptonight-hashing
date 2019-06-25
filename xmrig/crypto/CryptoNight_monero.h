@@ -91,7 +91,7 @@
         _mm_store_si128((__m128i *)((base_ptr) + ((offset) ^ 0x10)), _mm_add_epi64(chunk3, _b1)); \
         _mm_store_si128((__m128i *)((base_ptr) + ((offset) ^ 0x20)), _mm_add_epi64(chunk1, _b)); \
         _mm_store_si128((__m128i *)((base_ptr) + ((offset) ^ 0x30)), _mm_add_epi64(chunk2, _a)); \
-        if (VARIANT == xmrig::VARIANT_4) { \
+        if (VARIANT == xmrig::VARIANT_4 || VARIANT == xmrig::VARIANT_XTRI) { \
             _c = _mm_xor_si128(_mm_xor_si128(_c, chunk3), _mm_xor_si128(chunk1, chunk2)); \
         } \
     } while (0)
@@ -141,7 +141,7 @@
         vst1q_u64((uint64_t*)((base_ptr) + ((offset) ^ 0x10)), vaddq_u64(chunk3, vreinterpretq_u64_u8(_b1))); \
         vst1q_u64((uint64_t*)((base_ptr) + ((offset) ^ 0x20)), vaddq_u64(chunk1, vreinterpretq_u64_u8(_b))); \
         vst1q_u64((uint64_t*)((base_ptr) + ((offset) ^ 0x30)), vaddq_u64(chunk2, vreinterpretq_u64_u8(_a))); \
-        if (VARIANT == xmrig::VARIANT_4) { \
+        if (VARIANT == xmrig::VARIANT_4 || VARIANT == xmrig::VARIANT_XTRI) { \
             _c = veorq_u64(veorq_u64(_c, chunk3), veorq_u64(chunk1, chunk2)); \
         } \
     } while (0)
@@ -184,7 +184,7 @@
 #define VARIANT4_RANDOM_MATH_INIT(part) \
   uint32_t r##part[9]; \
   struct V4_Instruction code##part[256]; \
-  if ((VARIANT == xmrig::VARIANT_WOW) || (VARIANT == xmrig::VARIANT_4)) { \
+  if ((VARIANT == xmrig::VARIANT_WOW) || (VARIANT == xmrig::VARIANT_4 || VARIANT == xmrig::VARIANT_XTRI)) { \
     r##part[0] = (uint32_t)(h##part[12]); \
     r##part[1] = (uint32_t)(h##part[12] >> 32); \
     r##part[2] = (uint32_t)(h##part[13]); \
@@ -193,7 +193,7 @@
   v4_random_math_init<VARIANT>(code##part, height);
 
 #define VARIANT4_RANDOM_MATH(part, al, ah, cl, bx0, bx1) \
-  if ((VARIANT == xmrig::VARIANT_WOW) || (VARIANT == xmrig::VARIANT_4)) { \
+  if ((VARIANT == xmrig::VARIANT_WOW) || (VARIANT == xmrig::VARIANT_4 || VARIANT == xmrig::VARIANT_XTRI)) { \
     cl ^= (r##part[0] + r##part[1]) | ((uint64_t)(r##part[2] + r##part[3]) << 32); \
     r##part[4] = static_cast<uint32_t>(al); \
     r##part[5] = static_cast<uint32_t>(ah); \

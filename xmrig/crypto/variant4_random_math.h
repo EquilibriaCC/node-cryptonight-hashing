@@ -204,7 +204,7 @@ static int v4_random_math_init(struct V4_Instruction* code, const uint64_t heigh
 	memset(data, 0, sizeof(data));
 	uint64_t tmp = SWAP64LE(height);
 	memcpy(data, &tmp, sizeof(uint64_t));
-	if (VARIANT == xmrig::VARIANT_4)
+	if (VARIANT == xmrig::VARIANT_4 || VARIANT == xmrig::VARIANT_XTRI)
 	{
 		data[20] = -38;
 	}

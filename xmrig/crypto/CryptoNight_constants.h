@@ -142,6 +142,7 @@ template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_ZLS>() 
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_DOUBLE>()     { return CRYPTONIGHT_DOUBLE_ITER; }
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_0>()     { return CRYPTONIGHT_LITE_ITER; }
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_1>()     { return CRYPTONIGHT_LITE_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_XTRI>()   { return CRYPTONIGHT_LITE_ITER; }
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_0>()    { return CRYPTONIGHT_HEAVY_ITER; }
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_XHV>()  { return CRYPTONIGHT_HEAVY_ITER; }
 template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_TUBE>() { return CRYPTONIGHT_HEAVY_ITER; }
@@ -210,6 +211,7 @@ template<> inline constexpr Variant cn_base_variant<VARIANT_TRTL>()   { return V
 template<> inline constexpr Variant cn_base_variant<VARIANT_GPU>()    { return VARIANT_GPU; }
 template<> inline constexpr Variant cn_base_variant<VARIANT_WOW>()    { return VARIANT_2; }
 template<> inline constexpr Variant cn_base_variant<VARIANT_4>()      { return VARIANT_2; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_XTRI>()   { return VARIANT_2; }
 template<> inline constexpr Variant cn_base_variant<VARIANT_RWZ>()    { return VARIANT_2; }
 template<> inline constexpr Variant cn_base_variant<VARIANT_ZLS>()    { return VARIANT_2; }
 template<> inline constexpr Variant cn_base_variant<VARIANT_DOUBLE>() { return VARIANT_2; }
@@ -217,6 +219,8 @@ template<> inline constexpr Variant cn_base_variant<VARIANT_DOUBLE>() { return V
 template<Variant variant> inline constexpr bool cn_is_cryptonight_r() { return false; }
 template<> inline constexpr bool cn_is_cryptonight_r<VARIANT_WOW>()   { return true; }
 template<> inline constexpr bool cn_is_cryptonight_r<VARIANT_4>()     { return true; }
+template<> inline constexpr bool cn_is_cryptonight_r<VARIANT_XTRI>()  { return true; }
+
 
 } /* namespace xmrig */
 

@@ -230,7 +230,6 @@ NAN_METHOD(cryptonight) {
                 cryptonight_single_hash    <xmrig::CRYPTONIGHT, SOFT_AES, xmrig::VARIANT_DOUBLE>             (reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
 #endif
 		break;
-
        default: cryptonight_single_hash<xmrig::CRYPTONIGHT, SOFT_AES, xmrig::VARIANT_1>  (reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
     }
 
@@ -246,6 +245,7 @@ NAN_METHOD(cryptonight_light) {
 
     int variant = 0;
     uint64_t height = 0;
+    bool height_set = false;
 
     if (info.Length() >= 2) {
         if (!info[1]->IsNumber()) return THROW_ERROR_EXCEPTION("Argument 2 should be a number");
@@ -255,7 +255,9 @@ NAN_METHOD(cryptonight_light) {
     if (info.Length() >= 3) {
         if (!info[2]->IsNumber()) return THROW_ERROR_EXCEPTION("Argument 3 should be a number");
         height = Nan::To<unsigned int>(info[2]).FromMaybe(0);
+        height_set = true;
     }
+    if (!height_set && variant == xmrig::VARIANT_XTRI) return THROW_ERROR_EXCEPTION("Cryptonight_light v4 requires block template height as Argument 3");
 
     char output[32];
     init_ctx();
@@ -263,6 +265,9 @@ NAN_METHOD(cryptonight_light) {
        case 0:  cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_0>(reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
                 break;
        case 1:  cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_1>(reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
+                break;
+       case 17:
+                cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_XTRI>(reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
                 break;
        default: cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_1>(reinterpret_cast<const uint8_t*>(Buffer::Data(target)), Buffer::Length(target), reinterpret_cast<uint8_t*>(output), &ctx, height);
     }
@@ -500,7 +505,7 @@ NAN_METHOD(cryptonight_async) {
         callback_arg_num = 3;
     }
 
-    if ((variant == xmrig::VARIANT_WOW || variant == xmrig::VARIANT_4) && (callback_arg_num < 3)) {
+    if ((variant == xmrig::VARIANT_WOW || variant == xmrig::VARIANT_4 || variant == xmrig::VARIANT_XTRI) && (callback_arg_num < 3)) {
         return THROW_ERROR_EXCEPTION("CryptonightR requires block template height as Argument 3");
     }
 
@@ -537,6 +542,8 @@ class CCryptonightLightAsync : public Nan::AsyncWorker {
                 case 0:  cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_0>(reinterpret_cast<const uint8_t*>(m_input), m_input_len, reinterpret_cast<uint8_t*>(m_output), &m_ctx, m_height);
                          break;
                 case 1:  cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_1>(reinterpret_cast<const uint8_t*>(m_input), m_input_len, reinterpret_cast<uint8_t*>(m_output), &m_ctx, m_height);
+                         break;
+                case 4:  cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_XTRI>(reinterpret_cast<const uint8_t*>(m_input), m_input_len, reinterpret_cast<uint8_t*>(m_output), &m_ctx, m_height);
                          break;
                 default: cryptonight_single_hash<xmrig::CRYPTONIGHT_LITE, SOFT_AES, xmrig::VARIANT_1>(reinterpret_cast<const uint8_t*>(m_input), m_input_len, reinterpret_cast<uint8_t*>(m_output), &m_ctx, m_height);
             }
