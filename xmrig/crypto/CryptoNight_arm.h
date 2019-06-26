@@ -459,7 +459,8 @@ inline void cryptonight_single_hash(const uint8_t *__restrict__ input, size_t si
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
-    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    bool isXTRI = VARIANT == VARIANT_XTRI;
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO,isXTRI>();
     constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {
@@ -593,8 +594,8 @@ inline void cryptonight_single_hash_gpu(const uint8_t *__restrict__ input, size_
 {
     constexpr size_t MASK         = xmrig::CRYPTONIGHT_GPU_MASK;
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
-    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
-
+    bool isXTRI = VARIANT == VARIANT_XTRI;
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO,isXTRI>();
     static_assert(MASK > 0 && ITERATIONS > 0 && MEM > 0, "unsupported algorithm/variant");
 
     xmrig::keccak(input, size, ctx[0]->state);
@@ -617,7 +618,8 @@ inline void cryptonight_double_hash(const uint8_t *__restrict__ input, size_t si
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
-    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    bool isXTRI = VARIANT == VARIANT_XTRI;
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO,isXTRI>();
     constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {

@@ -63,15 +63,19 @@ constexpr const uint32_t CRYPTONIGHT_PICO_ITER   = 0x40000;
 constexpr const uint32_t CRYPTONIGHT_TRTL_ITER   = 0x10000;
 
 
-template<Algo ALGO> inline constexpr size_t cn_select_memory()           { return 0; }
-template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT>()       { return CRYPTONIGHT_MEMORY; }
-template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_LITE>()  { return CRYPTONIGHT_LITE_MEMORY; }
-template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_HEAVY>() { return CRYPTONIGHT_HEAVY_MEMORY; }
-template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_PICO>()  { return CRYPTONIGHT_PICO_MEMORY; }
+template<Algo ALGO,bool xtri> inline constexpr size_t cn_select_memory()           { return 0; }
+template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT, false>()       { return CRYPTONIGHT_MEMORY; }
+template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT, true>()       { return CRYPTONIGHT_LITE_MEMORY; }
+template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_LITE, false>()  { return CRYPTONIGHT_LITE_MEMORY; }
+template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_HEAVY, false>() { return CRYPTONIGHT_HEAVY_MEMORY; }
+template<> inline constexpr size_t cn_select_memory<CRYPTONIGHT_PICO, false>()  { return CRYPTONIGHT_PICO_MEMORY; }
 
 
-inline size_t cn_select_memory(Algo algorithm)
-{
+inline size_t cn_select_memory(Algo algorithm, bool xtri)
+{   
+    if(xtri)
+        return CRYPTONIGHT_LITE_MEMORY;
+        
     switch(algorithm)
     {
     case CRYPTONIGHT:
