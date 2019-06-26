@@ -557,11 +557,8 @@ inline void cryptonight_single_hash(const uint8_t *__restrict__ input, size_t si
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
- if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     static_assert(MASK > 0 && ITERATIONS > 0 && MEM > 0, "unsupported algorithm/variant");
 
@@ -725,11 +722,8 @@ inline void cryptonight_single_hash_gpu(const uint8_t *__restrict__ input, size_
 {
     constexpr size_t MASK         = xmrig::CRYPTONIGHT_GPU_MASK;
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
- if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+
     static_assert(MASK > 0 && ITERATIONS > 0 && MEM > 0, "unsupported algorithm/variant");
 
     xmrig::keccak(input, size, ctx[0]->state);
@@ -815,11 +809,8 @@ void cn_r_compile_code_double<xmrig::VARIANT_WOW>(const V4_Instruction* code, in
 template<xmrig::Algo ALGO, xmrig::Variant VARIANT, xmrig::Assembly ASM>
 inline void cryptonight_single_hash_asm(const uint8_t *__restrict__ input, size_t size, uint8_t *__restrict__ output, cryptonight_ctx **__restrict__ ctx, uint64_t height)
 {
-    if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }
+    constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
+
     if (xmrig::cn_is_cryptonight_r<VARIANT>() && !ctx[0]->generated_code_data.match(VARIANT, height)) {
         V4_Instruction code[256];
         const int code_size = v4_random_math_init<VARIANT>(code, height);
@@ -902,11 +893,8 @@ inline void cryptonight_single_hash_asm(const uint8_t *__restrict__ input, size_
 template<xmrig::Algo ALGO, xmrig::Variant VARIANT, xmrig::Assembly ASM>
 inline void cryptonight_double_hash_asm(const uint8_t *__restrict__ input, size_t size, uint8_t *__restrict__ output, cryptonight_ctx **__restrict__ ctx, uint64_t height)
 {
-    if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }
+    constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
+
     if (xmrig::cn_is_cryptonight_r<VARIANT>() && !ctx[0]->generated_code_double_data.match(VARIANT, height)) {
         V4_Instruction code[256];
         const int code_size = v4_random_math_init<VARIANT>(code, height);
@@ -960,12 +948,8 @@ inline void cryptonight_double_hash(const uint8_t *__restrict__ input, size_t si
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
-    if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }   
-     constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {
         memset(output, 0, 64);
@@ -1282,12 +1266,8 @@ inline void cryptonight_triple_hash(const uint8_t *__restrict__ input, size_t si
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
- if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }
-        constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {
         memset(output, 0, 32 * 3);
@@ -1350,11 +1330,8 @@ inline void cryptonight_quad_hash(const uint8_t *__restrict__ input, size_t size
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
-    if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {
         memset(output, 0, 32 * 4);
@@ -1426,11 +1403,8 @@ inline void cryptonight_penta_hash(const uint8_t *__restrict__ input, size_t siz
 {
     constexpr size_t MASK         = xmrig::cn_select_mask<ALGO>();
     constexpr size_t ITERATIONS   = xmrig::cn_select_iter<ALGO, VARIANT>();
- if(VARIANT == VARIANT_XTRI){
-        constexpr size_t MEM = xmrig::cn_select_memory<CRYPTONIGHT_LITE>();
-    }else{
-        constexpr size_t MEM = xmrig::cn_select_memory<ALGO>();
-    }    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
+    constexpr size_t MEM          = xmrig::cn_select_memory<ALGO>();
+    constexpr xmrig::Variant BASE = xmrig::cn_base_variant<VARIANT>();
 
     if (BASE == xmrig::VARIANT_1 && size < 43) {
         memset(output, 0, 32 * 5);
